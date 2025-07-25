@@ -10,9 +10,13 @@ import SwiftData
 
 @main
 struct rufusApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
+            Assignment.self,
+            NotificationItem.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
