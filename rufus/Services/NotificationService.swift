@@ -54,9 +54,11 @@ class NotificationService: ObservableObject {
         // An extra annoying reminder 30 minutes after main reminder
         let annoyingReminderTime = assignment.reminderDate.addingTimeInterval(1800) // 30 minutes after
         if annoyingReminderTime.timeIntervalSinceNow > 0 {
-            let annoyingContent = content.copy() as! UNMutableNotificationContent
+            let annoyingContent = UNMutableNotificationContent()
             annoyingContent.title = "🚨 STILL NEED TO DO THIS! 🚨"
             annoyingContent.body = "I know you're ignoring me, but you really need to work on \(assignment.title)!"
+            annoyingContent.sound = .default
+            annoyingContent.badge = 1
             
             let annoyingTrigger = UNTimeIntervalNotificationTrigger(timeInterval: annoyingReminderTime.timeIntervalSinceNow, repeats: false)
             let annoyingRequest = UNNotificationRequest(identifier: "assignment_\(assignment.id)_annoying1", content: annoyingContent, trigger: annoyingTrigger)
@@ -71,10 +73,11 @@ class NotificationService: ObservableObject {
         // Even more annoying reminder 1 hour before due date if it's different from reminder
         let hourBeforeDue = assignment.dueDate.addingTimeInterval(-3600)
         if hourBeforeDue > assignment.reminderDate && hourBeforeDue.timeIntervalSinceNow > 0 {
-            let urgentContent = content.copy() as! UNMutableNotificationContent
+            let urgentContent = UNMutableNotificationContent()
             urgentContent.title = "⚠️ ULTIMATE WARNING ⚠️"
             urgentContent.body = "This is your FINAL reminder for \(assignment.title)! It's due in 1 hour!"
             urgentContent.sound = .defaultCritical
+            urgentContent.badge = 1
             
             let urgentTrigger = UNTimeIntervalNotificationTrigger(timeInterval: hourBeforeDue.timeIntervalSinceNow, repeats: false)
             let urgentRequest = UNNotificationRequest(identifier: "assignment_\(assignment.id)_urgent", content: urgentContent, trigger: urgentTrigger)
@@ -89,10 +92,11 @@ class NotificationService: ObservableObject {
         // Extremely annoying reminder 10 minutes before due date
         let tenMinutesBeforeDue = assignment.dueDate.addingTimeInterval(-600)
         if tenMinutesBeforeDue > assignment.reminderDate && tenMinutesBeforeDue.timeIntervalSinceNow > 0 {
-            let extremeContent = content.copy() as! UNMutableNotificationContent
+            let extremeContent = UNMutableNotificationContent()
             extremeContent.title = "💥 LAST CALL BEFORE LATE! 💥"
             extremeContent.body = "You have 10 MINUTES to finish \(assignment.title) before it's LATE!"
             extremeContent.sound = .defaultCritical
+            extremeContent.badge = 1
             
             let extremeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: tenMinutesBeforeDue.timeIntervalSinceNow, repeats: false)
             let extremeRequest = UNNotificationRequest(identifier: "assignment_\(assignment.id)_extreme", content: extremeContent, trigger: extremeTrigger)

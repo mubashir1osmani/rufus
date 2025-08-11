@@ -16,23 +16,21 @@ struct MainTabView: View {
                     Text("Dashboard")
                 }
             
-            AssignmentsListView()
-                .tabItem {
-                    Image(systemName: "list.bullet")
-                    Text("Assignments")
-                }
+            NavigationStack {
+                AssignmentsListView()
+            }
+            .tabItem {
+                Image(systemName: "list.bullet")
+                Text("Assignments")
+            }
             
-            NotificationsView()
-                .tabItem {
-                    Image(systemName: "bell")
-                    Text("Notifications")
-                }
-            
-            SettingsView()
-                .tabItem {
-                    Image(systemName: "gear")
-                    Text("Settings")
-                }
+            NavigationStack {
+                CoursesListView()
+            }
+            .tabItem {
+                Image(systemName: "book.closed")
+                Text("Courses")
+            }
         }
     }
 }

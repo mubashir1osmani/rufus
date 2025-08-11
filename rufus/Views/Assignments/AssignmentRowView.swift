@@ -14,13 +14,27 @@ struct AssignmentRowView: View {
     
     var body: some View {
         HStack {
-            VStack(alignment: .leading) {
+            // Course color indicator
+            if let course = assignment.course {
+                Circle()
+                    .fill(Color(hex: course.color))
+                    .frame(width: 8, height: 8)
+            }
+            
+            VStack(alignment: .leading, spacing: 2) {
                 Text(assignment.title)
                     .font(.headline)
                 
-                Text(assignment.subject)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+                // Show course name if available, otherwise show subject
+                if let course = assignment.course {
+                    Text(course.displayName)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                } else if !assignment.subject.isEmpty {
+                    Text(assignment.subject)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
                 
                 Text("Due: \(assignment.dueDate, formatter: dateFormatter)")
                     .font(.caption)

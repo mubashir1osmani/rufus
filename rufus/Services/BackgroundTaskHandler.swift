@@ -16,7 +16,7 @@ class BackgroundTaskHandler {
     private init() {}
     
     func registerBackgroundTasks() {
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.rufus.check-assignments", using: nil) { task in
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.beacon.check-assignments", using: nil) { task in
             self.handleBackgroundCheck(task: task as! BGProcessingTask)
         }
     }
@@ -32,7 +32,7 @@ class BackgroundTaskHandler {
     }
     
     func scheduleNextBackgroundCheck() {
-        let request = BGProcessingTaskRequest(identifier: "com.rufus.check-assignments")
+        let request = BGProcessingTaskRequest(identifier: "com.beacon.check-assignments")
         request.requiresNetworkConnectivity = false
         request.requiresExternalPower = false
         request.earliestBeginDate = Date(timeIntervalSinceNow: 4 * 3600) // 4 hours from now

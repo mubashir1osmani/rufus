@@ -5,9 +5,13 @@
 //  Created by AI Assistant on 2025-07-25.
 //
 
+
 import SwiftUI
 
 struct SettingsView: View {
+    @Environment(\.modelContext) private var modelContext
+    @StateObject private var authService = AuthService.shared
+
     @AppStorage("notificationsEnabled") private var notificationsEnabled = true
     @AppStorage("annoyanceLevel") private var annoyanceLevel = 2 // 1-3 (low, medium, high)
     @AppStorage("earlyReminderMinutes") private var earlyReminderMinutes = 30
@@ -31,6 +35,7 @@ struct SettingsView: View {
                             step: 5)
                 }
             }
+        
             
             Section("About") {
                 HStack {
@@ -44,13 +49,35 @@ struct SettingsView: View {
                 
                 Link("Terms of Service", destination: URL(string: "https://example.com/terms")!)
             }
+            
+            Section("Account") {
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(authService.user?.email ?? "Student")
+                            .font(.headline)
+                        Text("Signed in")
+                            .font(.caption)
+                            .foregroundColor(.green)
+                    }
+                    
+                    Spacer()
+                    
+                    Button("Sign Out") {
+                        Task {
+                            try? await authService.signOut()
+                        }
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                    .foregroundColor(.red)
+                }
+            }
         }
-        .navigationTitle("Settings")
     }
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         SettingsView()
     }
 }

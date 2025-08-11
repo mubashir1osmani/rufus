@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  rufus
+//  beacon
 //
 //  Created by AI Assistant on 2025-07-25.
 //
@@ -44,7 +44,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         let schema = Schema([
             Item.self,
             Assignment.self,
-            NotificationItem.self
+            NotificationItem.self,
+            Course.self
         ])
         
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)

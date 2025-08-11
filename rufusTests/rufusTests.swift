@@ -1,5 +1,14 @@
 //
-//  rufusTests.swift
+//  beaconTests.swift
+//  beaconTests
+//
+//  Created by Mubashir Osmani on 2025-07-23.
+//
+
+import XCTest
+@testable import beacon
+
+final class beaconTests: XCTestCase {sTests.swift
 //  rufusTests
 //
 //  Created by Mubashir Osmani on 2025-07-23.

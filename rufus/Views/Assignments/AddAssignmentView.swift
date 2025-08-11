@@ -1,6 +1,6 @@
 //
 //  AddAssignmentView.swift
-//  rufus
+//  beacon
 //
 //  Created by AI Assistant on 2025-07-25.
 //
@@ -12,21 +12,58 @@ struct AddAssignmentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
+    @Query private var courses: [Course]
+    
     @State private var title = ""
     @State private var assignmentDescription = ""
     @State private var subject = ""
+    @State private var selectedCourse: Course?
     @State private var dueDate = Date().addingTimeInterval(86400) // Tomorrow
     @State private var reminderDate = Date().addingTimeInterval(43200) // 12 hours from now
     @State private var priority: Assignment.Priority = .medium
+    @State private var showingAddCourse = false
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section("Assignment Details") {
                     TextField("Title", text: $title)
                     TextField("Description", text: $assignmentDescription, axis: .vertical)
                         .lineLimit(3...6)
                     TextField("Subject", text: $subject)
+                }
+                
+                Section("Course") {
+                    if courses.isEmpty {
+                        HStack {
+                            Text("No courses available")
+                                .foregroundColor(.secondary)
+                            Spacer()
+                            Button("Add Course") {
+                                showingAddCourse = true
+                            }
+                            .font(.caption)
+                        }
+                    } else {
+                        Picker("Select Course", selection: $selectedCourse) {
+                            Text("No Course").tag(nil as Course?)
+                            ForEach(courses.sorted(by: { $0.name < $1.name })) { course in
+                                HStack {
+                                    Circle()
+                                        .fill(Color(hex: course.color))
+                                        .frame(width: 12, height: 12)
+                                    Text(course.displayName)
+                                }
+                                .tag(course as Course?)
+                            }
+                        }
+                        
+                        Button("Add New Course") {
+                            showingAddCourse = true
+                        }
+                        .font(.caption)
+                        .foregroundColor(.blue)
+                    }
                 }
                 
                 Section("Priority") {
@@ -58,6 +95,9 @@ struct AddAssignmentView: View {
                     .disabled(title.isEmpty)
                 }
             }
+            .sheet(isPresented: $showingAddCourse) {
+                AddCourseView()
+            }
         }
     }
     
@@ -68,7 +108,8 @@ struct AddAssignmentView: View {
             dueDate: dueDate,
             reminderDate: reminderDate,
             subject: subject,
-            priority: priority
+            priority: priority,
+            course: selectedCourse
         )
         
         modelContext.insert(newAssignment)

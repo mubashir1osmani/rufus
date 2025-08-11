@@ -19,6 +19,9 @@ final class Assignment {
     var subject: String
     var priority: Priority
     
+    // Relationship to course
+    var course: Course?
+    
     enum Priority: String, CaseIterable, Codable {
         case low = "Low"
         case medium = "Medium"
@@ -32,7 +35,8 @@ final class Assignment {
         dueDate: Date,
         reminderDate: Date,
         subject: String = "",
-        priority: Priority = .medium
+        priority: Priority = .medium,
+        course: Course? = nil
     ) {
         self.id = UUID()
         self.title = title
@@ -42,5 +46,6 @@ final class Assignment {
         self.reminderDate = reminderDate
         self.subject = subject
         self.priority = priority
+        self.course = course
     }
 }
